@@ -5,6 +5,12 @@ echo "🔐 Setting up SSL with Let's Encrypt..."
 # Stop nginx temporarily
 docker-compose down
 
+# Clean existing certificates
+echo "Cleaning existing SSL certificates..."
+rm -rf letsencrypt/live
+rm -rf letsencrypt/archive
+rm -rf letsencrypt/renewal
+
 # Create directories
 mkdir -p letsencrypt webroot
 
