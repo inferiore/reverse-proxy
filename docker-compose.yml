@@ -17,5 +17,5 @@ services:
     volumes:
       - ./letsencrypt:/etc/letsencrypt
       - ./ssl:/var/www/certbot
-    command: certonly --webroot --webroot-path=/var/www/certbot --email ederb1.1c@gmail.com --agree-tos --no-eff-email -d survey.ederbarrios.online -d library.ederbarrios.onlinemuM_U
+    command: certonly --webroot --webroot-path=/var/www/certbot --email ederb1.1c@gmail.com --agree-tos --no-eff-email -d survey.ederbarrios.online -d library.ederbarrios.online
     

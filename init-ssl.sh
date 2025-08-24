@@ -5,32 +5,30 @@ echo "🔐 Setting up SSL with Let's Encrypt..."
 # Stop nginx temporarily
 docker-compose down
 
-# Create temporary certificates to avoid nginx errors
-mkdir -p letsencrypt/live/survey.ederbarrios.online
-mkdir -p letsencrypt/live/library.ederbarrios.online
+# Create directories
+mkdir -p letsencrypt ssl
 
-openssl req -x509 -nodes -days 1 -newkey rsa:2048 \
-    -keyout letsencrypt/live/survey.ederbarrios.online/privkey.pem \
-    -out letsencrypt/live/survey.ederbarrios.online/fullchain.pem \
-    -subj "/CN=survey.ederbarrios.online"
-
-openssl req -x509 -nodes -days 1 -newkey rsa:2048 \
-    -keyout letsencrypt/live/library.ederbarrios.online/privkey.pem \
-    -out letsencrypt/live/library.ederbarrios.online/fullchain.pem \
-    -subj "/CN=library.ederbarrios.online"
-
-# Start nginx
+# Step 1: Use HTTP-only config for certificate generation
+echo "Step 1: Starting HTTP-only nginx for certificate challenge..."
+cp nginx-initial.conf nginx.conf
 docker-compose up -d nginx
 
-# Generate real certificates
-echo "Generating real SSL certificates..."
+# Wait for nginx to start
+sleep 5
+
+# Step 2: Generate certificates
+echo "Step 2: Generating SSL certificates..."
 docker-compose run --rm certbot
 
-# Reload nginx with real certificates
-docker-compose exec nginx nginx -s reload
+# Step 3: Switch to HTTPS config
+echo "Step 3: Switching to HTTPS configuration..."
+cp nginx-ssl.conf nginx.conf
+docker-compose restart nginx
 
 # Setup automatic renewal
 ./setup-cron.sh
 
 echo "✅ SSL configured successfully!"
 echo "🔄 Automatic renewal configured every 90 days"
+echo "🌐 Visit: https://survey.ederbarrios.online"
+echo "🌐 Visit: https://library.ederbarrios.online"
