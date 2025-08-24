@@ -6,7 +6,7 @@ echo "🔐 Setting up SSL with Let's Encrypt..."
 docker-compose down
 
 # Create directories
-mkdir -p letsencrypt ssl
+mkdir -p letsencrypt webroot
 
 # Step 1: Use HTTP-only config for certificate generation
 echo "Step 1: Starting HTTP-only nginx for certificate challenge..."
