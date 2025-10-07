@@ -60,7 +60,7 @@ fi
 
 # Test domain connectivity
 echo "🌐 Testing domain connectivity..."
-DOMAINS=("survey.ederbarrios.online" "library.ederbarrios.online" "apilibrary.ederbarrios.online" "cv.ederbarrios.online")
+DOMAINS=("survey.ederbarrios.online" "library.ederbarrios.online" "apilibrary.ederbarrios.online" "cv.ederbarrios.online" "store.ederbarrios.online")
 failed_domains=()
 
 for domain in "${DOMAINS[@]}"; do
