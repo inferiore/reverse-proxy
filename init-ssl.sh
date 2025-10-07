@@ -45,16 +45,16 @@ mkdir -p letsencrypt webroot
 # Step 1: Use HTTP-only config for certificate generation
 echo "📋 Step 1: Starting HTTP-only nginx for certificate challenge..."
 cp nginx-initial.conf nginx.conf
-docker-compose up -d nginx
+docker compose up -d nginx
 
 # Wait for nginx to start
 echo "⏳ Waiting for nginx to start..."
 sleep 10
 
 # Check if nginx is running
-if ! docker-compose ps | grep -q "nginx.*Up"; then
+if ! docker compose ps | grep -q "nginx.*Up"; then
     echo "❌ Nginx failed to start. Check logs:"
-    docker-compose logs nginx
+    docker compose logs nginx
     exit 1
 fi
 
