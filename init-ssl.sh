@@ -31,7 +31,7 @@ test_domain_connectivity() {
 
 # Stop nginx temporarily
 echo "🛑 Stopping existing containers..."
-docker-compose down
+docker compose down
 
 # Clean existing certificates
 echo "🧹 Cleaning existing SSL certificates..."
@@ -85,7 +85,7 @@ fi
 
 # Step 2: Generate certificates
 echo "🔐 Step 2: Generating SSL certificates..."
-if docker-compose run --rm certbot; then
+if docker compose run --rm certbot; then
     echo "✅ Certbot completed successfully"
 else
     echo "❌ Certbot failed. Staying with HTTP configuration."
@@ -105,22 +105,22 @@ fi
 echo "🔒 Step 3: Switching to HTTPS configuration..."
 cp nginx-ssl.conf nginx.conf
 
-if docker-compose restart nginx; then
+if docker compose restart nginx; then
     echo "✅ Nginx restarted with HTTPS configuration"
 else
     echo "❌ Nginx failed to restart with HTTPS. Rolling back..."
     cp nginx-initial.conf nginx.conf
-    docker-compose restart nginx
+    docker compose restart nginx
     echo "📋 Rolled back to HTTP configuration"
     exit 1
 fi
 
 # Wait and verify nginx is still running
 sleep 5
-if ! docker-compose ps | grep -q "nginx.*Up"; then
+if ! docker compose ps | grep -q "nginx.*Up"; then
     echo "❌ Nginx failed with HTTPS config. Rolling back..."
     cp nginx-initial.conf nginx.conf
-    docker-compose restart nginx
+    docker compose restart nginx
     echo "📋 Rolled back to HTTP configuration"
     exit 1
 fi
